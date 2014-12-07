@@ -16,9 +16,11 @@ showEnd = repeatedly $ do
   x <- await <|> (yield "group end" >> stop)
   yield $ show x
 
+-- | Example using 'taggedBy' and 'partitioning'
 test :: Monad m => ProcessT m Int String
 test = (supply [1,2,2,3,3,3] $ taggedBy (==)) ~> partitioning showEnd
 
+-- | Example using 'groupingOn'
 test2 :: Monad m => ProcessT m Int String
 test2 = supply [1,2,2,3,3,3] $ groupingOn (==) onlyFirst
 
