@@ -17,10 +17,8 @@ build-type:          Simple
 cabal-version:       >=1.10
 
 extra-source-files:
-  .travis.yml
   README.markdown
   examples/LICENSE
-  examples/machines-examples.cabal
   examples/*.hs
 
 library
