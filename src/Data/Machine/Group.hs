@@ -11,9 +11,14 @@ import Data.Machine
 isLeft :: Either a b -> Bool
 isLeft = either (const True) (const False)
 
+-- | Using a function to signal group changes, apply a machine independently over each group.
 groupingOn :: Monad m => (a -> a -> Bool) -> ProcessT m a b -> ProcessT m a b
 groupingOn f m = taggedBy f ~> partitioning m
 
+-- | Mark a transition point between two groups as a function of adjacent elements.
+-- @
+-- 'runT' ('supply' [1,2,2] ('taggedBy' (==))) == [Right 1, Left (), Right 2, Right 2]
+-- @
 taggedBy :: Monad m => (a -> a -> Bool) -> ProcessT m a (Either () a)
 taggedBy f = construct $ await >>= go
   where go x = do
